@@ -1,32 +1,39 @@
 <?php
-//error_reporting(E_ALL);
 
-  $conn = oci_connect("system", "sabingeorge95", "localhost/XE"); //127.0.0.1/XE
+	$conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
 
-  if (!$conn) {
-    $e = oci_error();
-    trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-  }
+	// Check if exists errors when try to connect oracle server
+	if (!$conn) {
+		$e = oci_error();
+		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+	}
 
-	$sql =
-	"
-select * from test1
-	";
-  $stid = oci_parse($conn, $sql);
+	// Get the content from file
+	$sqlContent = file_get_contents('queries.txt');
+	// Parse JSON and set the queries
+	$queries = json_decode($sqlContent)->queries;
 
-  //oci_bind_by_name($stid, ":v_test", $test);
-  oci_execute($stid);
-  //echo 'here ' . $test;
-   //exit;
+	// Create the table
+	// !!! AFTER RUN THIS CODE, YOU COMMENT THIS !!!
+	foreach ($queries->create_tables as $query) {
+		$stid = oci_parse($conn, $query);
+		oci_execute($stid);
+	}
 
-//  while ($stid_c = oci_get_implicit_resultset($stid)) {
-    while (($row = oci_fetch_array($stid, OCI_BOTH)) != false) {
-//      foreach ($row as $item) {
-       echo $row[0] . ' ' . $row[1];
-      }
-//    }
- // }
+	// Make the alter table
+	// !!! AFTER RUN THIS CODE, YOU COMMENT THIS !!!
+	foreach ($queries->alter_tables as $query) {
+		$stid = oci_parse($conn, $query);
+		oci_execute($stid);
+	}
 
-oci_free_statement($stid);
-  oci_close($conn);
-?>
+	// The code for errors, if exists
+	//if (!$r) {
+		//$e = oci_error($stid);
+		//echo '<pre>' . print_r($e['message'], true) . '</pre>';
+		//echo '<pre>' . print_r($e['sqltext'], true) . '</pre>';
+		//echo '<pre>' . print_r($e['offset'], true) . '</pre>';
+	//}
+
+	oci_free_statement($stid);
+	oci_close($conn);
