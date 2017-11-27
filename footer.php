@@ -32,5 +32,7 @@
     <!--jQuery form min -->
     <script src="js/jquery.form.min.js"></script>
 </body>
-
+<?php
+	oci_close($conn);
+?>
 </html>

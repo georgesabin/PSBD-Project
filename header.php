@@ -24,7 +24,13 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 <![endif]-->
 </head>
-
+<?php
+    $conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
+    if (!$conn) {
+		$e = oci_error();
+		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+	}
+?>
 <body class="fix-header card-no-border fix-sidebar">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->

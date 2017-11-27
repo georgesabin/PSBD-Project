@@ -1,4 +1,11 @@
-<?php include_once('header.php'); ?>
+<?php
+
+    include_once('header.php'); 
+    $stid = oci_parse($conn, "SELECT tip FROM camere");
+    //$stid = oci_parse($conn, "INSERT INTO camere values (3, 102, 1, 'double')");
+    oci_execute($stid);
+
+?>
 <!-- ============================================================== -->
 <!-- Container fluid  -->
 <!-- ============================================================== -->
@@ -54,14 +61,14 @@
                             <label class="col-md-12">CNP</label>
                             <div class="col-md-12">
                                 <input type="text" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp">
-                                <label style="font-style: italic; font-size: 12px;"></label>
+                                <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-12">Telefon</label>
                             <div class="col-md-12">
                                 <input type="text" placeholder="Introdu telefon" class="form-control form-control-line" name="rezervare_telefon">
-                                <label style="font-style: italic; font-size: 12px;"></label>
+                                <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
                     </form>
@@ -86,10 +93,20 @@
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Modal Header</h4>
+          <h4 class="modal-title">Disponibilitate camere</h4>
         </div>
         <div class="modal-body">
-          <p>Some text in the modal.</p>
+            <div class="row">
+                <div class="col-md-6">
+                    <select class="form-control">
+                    <?php
+                        while (($row = oci_fetch_row($stid)) != false) {
+                            echo '<option>' . $row[0] . '</option>';
+                        }
+                    ?>
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
