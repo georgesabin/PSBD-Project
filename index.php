@@ -1,5 +1,5 @@
 <?php
-
+exit;
 	$conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
 
 	// Check if exists errors when try to connect oracle server

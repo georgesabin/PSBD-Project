@@ -1,9 +1,10 @@
 <?php
 
     include_once('header.php'); 
-    $stid = oci_parse($conn, "SELECT tip FROM camere");
-    //$stid = oci_parse($conn, "INSERT INTO camere values (3, 102, 1, 'double')");
-    oci_execute($stid);
+    
+    // $stid = oci_parse($conn, "SELECT tip FROM camere");
+    // $stid = oci_parse($conn, "INSERT INTO camere values (3, 102, 1, 'double')");
+    // oci_execute($stid);
 
 ?>
 <!-- ============================================================== -->
@@ -51,23 +52,42 @@
                 <div class="card-body">
                     <form id="rezervare" class="form-horizontal form-material" action="form-response.php" method="POST">
                         <div class="form-group">
-                            <label class="col-md-12">Nume</label>
+                            <label class="col-md-12">Selecteaza tip camera</label>
                             <div class="col-md-12">
-                                <input type="text" placeholder="Introdu numele" class="form-control form-control-line" name="rezervare_nume">
+                                <select class="form-control" name="rezervare_tip_camera">
+                                    <option value="">Tip camera</option>
+                                    <option value="single">Single</option>
+                                    <option value="dubla">Dubla</option>
+                                    <option value="tripla">Tripla</option>
+                                </select>
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-12">CNP</label>
+                            <label class="col-md-12">Data Sosire</label>
                             <div class="col-md-12">
-                                <input type="text" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp">
+                                <input type="date" class="form-control form-control-line" name="rezervare_data_sosire">
+                                <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Data Plecare</label>
+                            <div class="col-md-12">
+                                <input type="date" class="form-control form-control-line" name="rezervare_data_plecare">
+                                <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-12">Nume</label>
+                            <div class="col-md-12">
+                                <input type="text" placeholder="Introdu numele" class="form-control form-control-line" name="rezervare_nume" disabled>
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-12">Telefon</label>
                             <div class="col-md-12">
-                                <input type="text" placeholder="Introdu telefon" class="form-control form-control-line" name="rezervare_telefon">
+                                <input type="text" placeholder="Introdu telefon" class="form-control form-control-line" name="rezervare_telefon" disabled>
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
@@ -98,13 +118,10 @@
         <div class="modal-body">
             <div class="row">
                 <div class="col-md-6">
-                    <select class="form-control">
-                    <?php
-                        while (($row = oci_fetch_row($stid)) != false) {
-                            echo '<option>' . $row[0] . '</option>';
-                        }
-                    ?>
-                    </select>
+                    <!-- 
+                        Creezi aici div pentru lista camere disponibile
+                        JS-ul este in js/jquery.form.min.js -> jos
+                    -->
                 </div>
             </div>
         </div>

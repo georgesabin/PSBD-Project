@@ -1,19 +1,25 @@
 <?php
 
-    $conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
-    if (!$conn) {
-        $e = oci_error();
-        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
-    }
-
     $inputs = (object)$_POST;
 
     $errors = [
+        'rezervare_tip_camera'    => '',
+        'rezervare_data_sosire'    => '',
+        'rezervare_data_plecare'    => '',
         'rezervare_nume'    => '',
         'rezervare_cnp'     => '',
         'rezervare_telefon' => ''
     ];
 
+    if ($inputs->rezervare_tip_camera === '') { 
+        $errors['rezervare_tip_camera'] = 'Alege un tip de camera!';
+    }
+    if ($inputs->rezervare_data_sosire === '') { 
+        $errors['rezervare_data_sosire'] = 'Selecteaza o data de sosire!';
+    }
+    if ($inputs->rezervare_data_plecare === '') { 
+        $errors['rezervare_data_plecare'] = 'Selecteaza o data de plecare!';
+    }
     if ($inputs->rezervare_nume === '') { 
         $errors['rezervare_nume'] = 'Numele nu este completat!';
     }
@@ -40,13 +46,20 @@
         $errors['rezervare_telefon'] = 'Numarul de telefon este incorect!';
     }
 
+    if (!empty($errors)) { echo json_encode(['errors' => $errors]); exit; }
+
+    $conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
+    if (!$conn) {
+        $e = oci_error();
+        trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
+    }
+
     $query = oci_parse($conn, 'INSERT INTO clienti (id, nume, cnp, nr_telefon) VALUES(1, :nume, :cnp, :nr_telefon)');
     oci_bind_by_name($query, ':nume', $inputs->rezervare_nume);
     oci_bind_by_name($query, ':cnp', $inputs->rezervare_cnp);
     oci_bind_by_name($query, ':nr_telefon', $inputs->rezervare_telefon);
     oci_execute($query);
 
-    if (!empty($errors)) { echo json_encode(['errors' => $errors]); }
 
     oci_free_statement($query);
 	oci_close($conn);

@@ -1,18 +1,19 @@
 {
 	"queries": {
 		"create_tables": {
-			"1": "CREATE TABLE clienti (id numeric(11) NOT NULL, nume varchar2(100) NOT NULL, cnp numeric(14) NOT NULL, nr_telefon numeric(11) NOT NULL, CONSTRAINT clienti_pk PRIMARY KEY(id))",
-			"2": "CREATE TABLE personal (id numeric(11) NOT NULL, nume varchar(50) DEFAULT NULL, functie varchar(100) DEFAULT NULL, CONSTRAINT personal_pk PRIMARY KEY (id))",
-			"3": "CREATE TABLE rezervare_ocupare (id numeric(11) NOT NULL, id_client numeric(11) DEFAULT 0 NOT NULL, id_camera numeric(11) DEFAULT 0 NOT NULL, data_start date, data_sfarsit date, status_camera number(4) DEFAULT 0 NOT NULL, CONSTRAINT rezervare_ocupare_pk PRIMARY KEY (id))",
-			"4": "CREATE TABLE tip (id numeric(11) NOT NULL, tip_camera varchar(50) NOT NULL, pret_per_zi number(5,2) NOT NULL, CONSTRAINT tip_pk PRIMARY KEY (id))",
-			"5": "CREATE TABLE camere (id numeric(11) NOT NULL, numar number, etaj number, id_tip number NOT NUll)"
+			"0": "CREATE TABLE clienti (id number NOT NULL, nume varchar2(100) NOT NULL, cnp varchar2(14) NOT NULL, nr_telefon varchar2(11) NOT NULL)",
+			"1": "CREATE TABLE rezervare_ocupare (id number NOT NULL, id_client number DEFAULT 0 NOT NULL, id_camera number DEFAULT 0 NOT NULL, data_start date, data_sfarsit date, status_camera smallint DEFAULT 0 NOT NULL)",
+			"2": "CREATE TABLE tip (id number NOT NULL, tip_camera varchar(50) NOT NULL, pret_per_zi number(5,2) NOT NULL)",
+			"3": "CREATE TABLE camere (id number NOT NULL, numar number, etaj number, id_tip number NOT NUll)"
 		},
 		"alter_tables": {
-			"0": "ALTER TABLE tip ADD CONSTRAINT fk_tip_id FOREIGN KEY (id) REFERENCES camere(id)",
-			"1": "ALTER TABLE rezervare_ocupare ADD CONSTRAINT fk_r_o_camera_id FOREIGN KEY (id_camera) REFERENCES camere(id)",
-			"2": "ALTER TABLE rezervare_ocupare ADD CONSTRAINT fk_r_o_client_id FOREIGN KEY (id_client) REFERENCES clienti(id)",
-			"3": "ALTER TABLE camere ADD CONSTRAINT camere_pk PRIMARY KEY ( id )",
-			"4": "ALTER TABLE camere ADD CONSTRAINT camere_tip_fk FOREIGN KEY ( id_tip ) REFERENCES tip ( id )"
+			"0": "ALTER TABLE camere ADD CONSTRAINT camere_pk PRIMARY KEY (id)",
+			"1": "ALTER TABLE clienti ADD CONSTRAINT clienti_pk PRIMARY KEY (id)",
+			"2": "ALTER TABLE rezervare_ocupare ADD CONSTRAINT rezervare_ocupare_pk PRIMARY KEY (id)",
+			"3": "ALTER TABLE tip ADD CONSTRAINT tip_pk PRIMARY KEY (id)",
+			"4": "ALTER TABLE camere ADD CONSTRAINT camere_tip_fk FOREIGN KEY (id_tip) REFERENCES tip (id)",
+			"5": "ALTER TABLE rezervare_ocupare ADD CONSTRAINT rezervare_ocupare_camere_fk FOREIGN KEY (id_camera) REFERENCES camere(id)",
+			"6": "ALTER TABLE rezervare_ocupare ADD CONSTRAINT rezervare_ocupare_clienti_fk FOREIGN KEY (id_client) REFERENCES clienti(id)"
 		}
 	}
 }
