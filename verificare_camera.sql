@@ -21,3 +21,4 @@ END verificare_camera;
 
 --EXECUTARE FISIER PL/SQL
 --@/home/sabin/Downloads/PSBD/verificare_camera.sql
+--@/var/www/html/psbdproject/verificare_camera.sql

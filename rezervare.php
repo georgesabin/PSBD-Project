@@ -51,6 +51,7 @@
             <div class="card">
                 <div class="card-body">
                     <form id="rezervare" class="form-horizontal form-material" action="form-response.php" method="POST">
+                        <input type="hidden" name="camere_rezervate" value=""/>
                         <div class="form-group">
                             <label class="col-md-12">Selecteaza tip camera</label>
                             <div class="col-md-12">
@@ -117,16 +118,17 @@
         </div>
         <div class="modal-body">
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <!-- 
                         Creezi aici div pentru lista camere disponibile
                         JS-ul este in js/jquery.form.min.js -> jos
                     -->
+                    <div id="camere_disponibile"><div class="row"></div></div>
                 </div>
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" id="rezervare_ok_button" class="btn btn-default" data-dismiss="modal">OK</button>
         </div>
       </div>
       

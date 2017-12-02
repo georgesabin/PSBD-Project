@@ -10,7 +10,7 @@
 
     // $query = oci_parse($conn, 'INSERT INTO tip VALUES(1, \'dubla\', 150.00)');
     // oci_execute($query);
-    // $query = oci_parse($conn, 'INSERT INTO camere VALUES(1, 102, 1, 1)');
+    // $query = oci_parse($conn, 'INSERT INTO camere VALUES(2, 200, 2, 1)');
     // oci_execute($query);
 
     // Aduc din baza de date camere in functie de tip
@@ -37,7 +37,7 @@
         oci_bind_by_name($outputCheck, ':data_plecare', $data_plecare) ;
         
         // In $r retin ceea ce returneaza functia PL/SQL
-        oci_bind_by_name($outputCheck, ':r', $r) ;
+        oci_bind_by_name($outputCheck, ':r', $r);
 
         oci_execute($outputCheck);
 
@@ -57,4 +57,4 @@
     oci_close($conn);
 
     // Return the result
-    echo json_encode($camere);
+    echo json_encode($camere, true);
