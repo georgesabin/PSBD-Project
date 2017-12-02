@@ -17,9 +17,9 @@
         <div class="col-md-5 align-self-center">
             <h3 class="text-themecolor">Rezervare</h3>
         </div>
-        <div class="col-md-7 align-self-center">
+        <!-- <div class="col-md-7 align-self-center">
             <button type="button" class="btn waves-effect waves-light btn-danger pull-right hidden-sm-down" data-toggle="modal" data-target="#myModal">Popup</button>
-        </div>
+        </div> -->
     </div>
     <!-- ============================================================== -->
     <!-- End Bread crumb and right sidebar toggle -->
@@ -29,27 +29,10 @@
     <!-- ============================================================== -->
     <!-- Row -->
     <div class="row">
-        <!-- Column -->
-        <div class="col-lg-4 col-xlg-3 col-md-5">
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <center class="m-t-30"> <img src="../assets/images/users/5.jpg" class="img-circle" width="150" />
-                        <h4 class="card-title m-t-10">Hanna Gover</h4>
-                        <h6 class="card-subtitle">Accoubts Manager Amix corp</h6>
-                        <div class="row text-center justify-content-md-center">
-                            <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-people"></i> <font class="font-medium">254</font></a></div>
-                            <div class="col-4"><a href="javascript:void(0)" class="link"><i class="icon-picture"></i> <font class="font-medium">54</font></a></div>
-                        </div>
-                    </center>
-                </div>
-            </div>
-        </div>
-        <!-- Column -->
-        <!-- Column -->
-        <div class="col-lg-8 col-xlg-9 col-md-7">
-            <div class="card">
-                <div class="card-body">
-                    <form id="rezervare" class="form-horizontal form-material" action="form-response.php" method="POST">
+                    <form id="rezervare" class="form-horizontal form-material">
                         <input type="hidden" name="camere_rezervate" value=""/>
                         <div class="form-group">
                             <label class="col-md-12">Selecteaza tip camera</label>
@@ -80,26 +63,34 @@
                         <div class="form-group">
                             <label class="col-md-12">CNP</label>
                             <div class="col-md-12">
-                                <input type="number" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp">
+                                <input type="number" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp" id="rezervare_cnp">
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
-                        <div class="form-group">
+
+                        <div class="form-group" id="verificaCnpButton">
+                            <div class="col-md-12">
+                                <!-- Verifica existenta client verificaClient in custom.js -->
+                                <button type="button" class="btn btn-success" onclick="verificaClient('rezervare_cnp')">Verifica CNP</button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group input-hidden">
                             <label class="col-md-12">Nume</label>
                             <div class="col-md-12">
-                                <input type="text" placeholder="Introdu numele" class="form-control form-control-line" name="rezervare_nume" disabled>
+                                <input type="text" placeholder="Introdu numele" class="form-control form-control-line" name="rezervare_nume">
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group input-hidden">
                             <label class="col-md-12">Telefon</label>
                             <div class="col-md-12">
-                                <input type="text" placeholder="Introdu telefon" class="form-control form-control-line" name="rezervare_telefon" disabled>
+                                <input type="text" placeholder="Introdu telefon" class="form-control form-control-line" name="rezervare_telefon">
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
                     </form>
-                    <div class="form-group">
+                    <div class="form-group input-hidden">
                         <div class="col-sm-12">
                             <button class="btn btn-success" onclick="submit_form('rezervare');">Rezerva</button>
                         </div>

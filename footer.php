@@ -29,6 +29,7 @@
     <script src="js/sidebarmenu.js"></script>
     <!--Custom JavaScript -->
     <script src="js/custom.min.js"></script>
+    <script src="js/our.js"></script>
     <!--jQuery form min -->
     <script src="js/jquery.form.min.js"></script>
 </body>
