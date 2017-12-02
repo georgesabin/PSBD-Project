@@ -1,5 +1,4 @@
 <?php
-
     include_once('header.php'); 
     
     // $stid = oci_parse($conn, "SELECT tip FROM camere");

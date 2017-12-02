@@ -1,13 +1,15 @@
 <?php
-exit;
-	$conn = oci_connect('system', 'sabingeorge95', 'localhost/XE');
-
+	exit;
+	$dbInfo = file_get_contents('login.txt');
+	$dbInfo = json_decode($dbInfo);
+	$conn = oci_connect($dbInfo->user, $dbInfo->pass, $dbInfo->ip);
+	
 	// Check if exists errors when try to connect oracle server
 	if (!$conn) {
 		$e = oci_error();
 		trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
 	}
-
+	
 	// Get the content from file
 	$sqlContent = file_get_contents('queries.txt');
 	// Parse JSON and set the queries
