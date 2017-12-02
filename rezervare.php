@@ -79,6 +79,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label class="col-md-12">CNP</label>
+                            <div class="col-md-12">
+                                <input type="number" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp">
+                                <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-12">Nume</label>
                             <div class="col-md-12">
                                 <input type="text" placeholder="Introdu numele" class="form-control form-control-line" name="rezervare_nume" disabled>

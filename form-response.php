@@ -2,14 +2,7 @@
 
     $inputs = (object)$_POST;
 
-    $errors = [
-        'rezervare_tip_camera'    => '',
-        'rezervare_data_sosire'    => '',
-        'rezervare_data_plecare'    => '',
-        'rezervare_nume'    => '',
-        'rezervare_cnp'     => '',
-        'rezervare_telefon' => ''
-    ];
+    $errors = [];
 
     if ($inputs->rezervare_tip_camera === '') { 
         $errors['rezervare_tip_camera'] = 'Alege un tip de camera!';
@@ -54,12 +47,17 @@
         trigger_error(htmlentities($e['message'], ENT_QUOTES), E_USER_ERROR);
     }
 
-    $query = oci_parse($conn, 'INSERT INTO clienti (id, nume, cnp, nr_telefon) VALUES(1, :nume, :cnp, :nr_telefon)');
-    oci_bind_by_name($query, ':nume', $inputs->rezervare_nume);
-    oci_bind_by_name($query, ':cnp', $inputs->rezervare_cnp);
-    oci_bind_by_name($query, ':nr_telefon', $inputs->rezervare_telefon);
-    oci_execute($query);
+    $camere = json_decode($_POST['camere_rezervate']);
+
+    var_dump(json_decode(str_replace('\'', '"', $camere[0])));
 
 
-    oci_free_statement($query);
+
+    $verificareClient = oci_parse($conn, 'BEGIN verificare_client(:cnp, :nume, :nr_telefon); END;');
+    oci_bind_by_name($verificareClient, ':cnp', $inputs->rezervare_cnp);
+    oci_bind_by_name($verificareClient, ':nume', $inputs->rezervare_nume);
+    oci_bind_by_name($verificareClient, ':nr_telefon', $inputs->rezervare_telefon);
+    oci_execute($verificareClient);
+    
+    oci_free_statement($verificareClient);
 	oci_close($conn);

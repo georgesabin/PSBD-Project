@@ -46,6 +46,7 @@
         // Camera nu e ocupata, atunci o adaug in array
         if ($r == 0) {
             $camere[$row->ID] = [
+                'id'          => $row->ID,
                 'numar'       => $row->NUMAR,
                 'etaj'        => $row->ETAJ,
                 'pret_per_zi' => $row->PRET_PER_ZI
@@ -57,4 +58,4 @@
     oci_close($conn);
 
     // Return the result
-    echo json_encode($camere, true);
+    echo json_encode($camere);
