@@ -16,3 +16,83 @@ function verificaClient(cnpID) {
             $('.input-hidden').show();
         })
 }
+
+function submit_form(form_selector, target) {
+    
+    $('#' + form_selector).ajaxSubmit({
+        target: target,
+        beforeSubmit: function() {
+            $('#' + target).html('')
+        },
+        success: function(data) {
+            if (data != '') {
+                result = $.parseJSON(data);
+                if (!$.isEmptyObject(result.errors)) {
+                    $.each(result.errors, function(key, value) {
+                        if (value != '') {
+                            $('*[name="' + key + '"]').siblings('label').html('<i class="mdi mdi-alert-circle"></i>' + value);
+                            console.log(key, value);
+                        } else {
+                            $('*[name="' + key + '"]').siblings('label').html('');
+                        }
+                    });
+                }
+            }
+        }
+    });
+
+}
+
+var camere = [];
+
+$(document).ready(function() {
+
+    $('body').on('change', '*[name="rezervare_tip_camera"], *[name="rezervare_data_sosire"], *[name="rezervare_data_plecare"]', function() {
+        console.log($(this).val());
+        if ($('*[name="rezervare_tip_camera"]').val() != '' && $('*[name="rezervare_data_sosire"]').val() != '' && $('*[name="rezervare_data_plecare"]').val() != '') {
+            $.ajax({
+                url: './ajax_requests/rezervare_camere_popup.php',
+                method: 'POST',
+                dataType: 'json',
+                data: {
+                    tip_camera: $('*[name="rezervare_tip_camera"]').val(),
+                    data_sosire: $('*[name="rezervare_data_sosire"]').val(),
+                    data_plecare: $('*[name="rezervare_data_plecare"]').val(),
+                },
+                beforeSend: function() {
+                    $('body').find('#myModal').find('#camere_disponibile').empty();
+                },
+                success: function(data) {
+                    $.each(data, function(key, val) {
+                        html = '';
+                        html += '<div class="row">';
+                        html += '<div class="col-md-2"><label>Etaj</label><input type="text" class="form-control" name="rezervare_etaj" value="' + val.etaj + '" disabled/></div>';
+                        html += '<div class="col-md-4"><label>Numar camera</label><input type="text" class="form-control" name="rezervare_numar" value="' + val.numar + '" disabled/></div>';
+                        html += '<div class="col-md-3"><label>Pret per zi</label><input type="text" class="form-control" name="rezervare_pret_per_zi" value="' + val.pret_per_zi + '" disabled/></div>';
+                        html += '<div class="col-md-3"><input type="checkbox" name="rezervare_camera_' + $('*[name="rezervare_tip_camera"]').val() + key + '" class="form-control" value="{\'id\':' + val.id + ', \'etaj\':' + val.etaj + ', \'numar\':' + val.numar + ', \'pret_per_zi\':' + val.pret_per_zi + '}"></div>';
+                        html += '</div>';
+
+                        $('body').find('#myModal').find('#camere_disponibile').append(html);
+
+                        // Event on change pe checkbox-uri. Daca e bifat pun valoare in array, daca nu o sterg
+                        $('*[name="rezervare_camera_' + $('*[name="rezervare_tip_camera"]').val() + key +'"]').change(function() {
+                            if(this.checked) {
+                                camere.push($(this).val());
+                            } else {
+                                camere = $.grep(camere, function(value) {
+                                    return value != $('*[name="rezervare_camera_' + $('*[name="rezervare_tip_camera"]').val() + key +'"]').val();
+                                });
+                            }
+                        });
+                    });
+
+                    // Cand clientul apasa pe butonul OK din modal, setez valoare pe input-ul hidden din form-ul principal
+                    $('body').on('click', '#rezervare_ok_button', function() {
+                        $('*[name="camere_rezervate"]').val(JSON.stringify(camere));
+                    });
+                }
+            });
+            $('#myModal').modal('show'); 
+        }
+    });
+});

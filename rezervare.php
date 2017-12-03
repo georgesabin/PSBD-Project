@@ -32,7 +32,7 @@
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-body">
-                    <form id="rezervare" class="form-horizontal form-material">
+                    <form id="rezervare" class="form-horizontal form-material" method="post" action="form-response.php">
                         <input type="hidden" name="camere_rezervate" value=""/>
                         <div class="form-group">
                             <label class="col-md-12">Selecteaza tip camera</label>
