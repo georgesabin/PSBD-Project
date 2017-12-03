@@ -15,11 +15,13 @@ BEGIN
 END;
 /
 
-CREATE OR REPLACE PROCEDURE verificare_client
+CREATE OR REPLACE FUNCTION verificare_client
 (v_cnp_client IN clienti.cnp%TYPE, v_nume_client IN clienti.nume%TYPE,
 v_nr_telefon_client IN clienti.nr_telefon%TYPE)
+RETURN NUMBER
 IS
 v_exists number := 0;
+v_client_id number;
 BEGIN
 	SELECT count(*)
 	INTO v_exists
@@ -30,6 +32,11 @@ BEGIN
     ELSE
         INSERT INTO clienti (nume, cnp, nr_telefon) VALUES(v_nume_client, v_cnp_client, v_nr_telefon_client);
     END IF;
+    SELECT id
+	INTO v_client_id
+	FROM clienti
+	WHERE cnp=v_cnp_client;
+    RETURN v_client_id;
 END verificare_client;
 /
 

@@ -53,15 +53,26 @@
 
     $camere = json_decode($_POST['camere_rezervate']);
 
-    var_dump(json_decode(str_replace('\'', '"', $camere[0])));
-
-
-
-    $verificareClient = oci_parse($conn, 'BEGIN verificare_client(:cnp, :nume, :nr_telefon); END;');
+    $verificareClient = oci_parse($conn, 'BEGIN :id_client := verificare_client(:cnp, :nume, :nr_telefon); END;');
     oci_bind_by_name($verificareClient, ':cnp', $inputs->rezervare_cnp);
     oci_bind_by_name($verificareClient, ':nume', $inputs->rezervare_nume);
     oci_bind_by_name($verificareClient, ':nr_telefon', $inputs->rezervare_telefon);
+    oci_bind_by_name($verificareClient, ':id_client', $id_client);
     oci_execute($verificareClient);
-    
+
+    // Fac un foreach prin toate camere pentru rezervare si adaug datele in tabela rezervare_ocupare
+    foreach ($camere as $camera) {
+        $output = json_decode(str_replace('\'', '"', $camera));
+        $insert_rezervare = oci_parse($conn, 'BEGIN insert_rezervare_ocupare(:id_client, :id_camera, :data_start, :data_finish); END;');
+        oci_bind_by_name($insert_rezervare, ':id_client', $id_client);
+        oci_bind_by_name($insert_rezervare, ':id_camera', $output->id);
+        $dataStart = date('d-M-Y', strtotime($inputs->rezervare_data_sosire));
+        $dataFinish = date('d-M-Y', strtotime($inputs->rezervare_data_plecare));
+        oci_bind_by_name($insert_rezervare, ':data_start', $dataStart);
+        oci_bind_by_name($insert_rezervare, ':data_finish', $dataFinish);
+        oci_execute($insert_rezervare);
+        oci_free_statement($insert_rezervare);    
+    }
+
     oci_free_statement($verificareClient);
 	oci_close($conn);
