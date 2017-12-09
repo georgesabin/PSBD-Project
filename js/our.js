@@ -22,12 +22,15 @@ function submit_form(form_selector, target) {
     $('#' + form_selector).ajaxSubmit({
         target: target,
         beforeSubmit: function() {
-            $('#' + target).html('')
+            $('#' + target).html('');
         },
         success: function(data) {
             if (data != '') {
                 result = $.parseJSON(data);
-                if (!$.isEmptyObject(result.errors)) {
+                if ($.type(result.errors) == 'string') {
+                    console.log(result.errors);
+                    $('#eroareCameraOcupata').html('<i class="mdi mdi-alert-circle"></i> ' + result.errors);
+                } else if (!$.isEmptyObject(result.errors)) {
                     $.each(result.errors, function(key, value) {
                         if (value != '') {
                             $('*[name="' + key + '"]').siblings('label').html('<i class="mdi mdi-alert-circle"></i>' + value);
@@ -91,11 +94,12 @@ $(document).ready(function() {
                         // Event on change pe checkbox-uri. Daca e bifat pun valoare in array, daca nu o sterg
                         $('*[name="rezervare_camera_' + $('*[name="rezervare_tip_camera"]').val() + key +'"]').change(function() {
                             if(this.checked) {
+                                $('#rezervare_ok_button').removeAttr('disabled');
+                                camere = [];
                                 camere.push($(this).val());
                             } else {
-                                camere = $.grep(camere, function(value) {
-                                    return value != $('*[name="rezervare_camera_' + $('*[name="rezervare_tip_camera"]').val() + key +'"]').val();
-                                });
+                                camere = [];
+                                $('#rezervare_ok_button').prop('disabled', true);                                
                             }
                         });
                     });
@@ -108,6 +112,23 @@ $(document).ready(function() {
             });
             $('#myModal').modal('show'); 
         }
+    });
+
+    // Aduc toate rezervarile dupa id-ul clientului
+    $('body').on('click', '#editare-rezervare', function() {
+        $.ajax({
+            url: './ajax_requests/editare_rezervare.php',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                cnp: $('*[name="editare_cnp"]').val()
+            },
+            success: function(data) {
+                $.each(data, function (key, value) {
+                    console.log(key, value);
+                });
+            }
+        });
     });
 
 });

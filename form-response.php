@@ -70,7 +70,14 @@
         $dataFinish = date('d-M-Y', strtotime($inputs->rezervare_data_plecare));
         oci_bind_by_name($insert_rezervare, ':data_start', $dataStart);
         oci_bind_by_name($insert_rezervare, ':data_finish', $dataFinish);
-        oci_execute($insert_rezervare);
+        // Returnez eroarea din pl/sql daca exista
+        $r = oci_execute($insert_rezervare);
+        if (!$r) {
+            $error = oci_error($insert_rezervare);
+            $e = explode("\n", $error['message']);
+            echo json_encode(['errors' => htmlentities(explode(': ', $e[0])[1])]);
+
+        }
         oci_free_statement($insert_rezervare);    
     }
 

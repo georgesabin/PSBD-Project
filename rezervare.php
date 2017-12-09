@@ -95,6 +95,7 @@
                             <button class="btn btn-success" onclick="submit_form('rezervare');">Rezerva</button>
                         </div>
                     </div>
+                    <h1 id="eroareCameraOcupata" style="color: red;"></h1>
                 </div>
             </div>
         </div>
@@ -125,7 +126,7 @@
             </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="rezervare_ok_button" class="btn btn-default" data-dismiss="modal">OK</button>
+          <button type="button" id="rezervare_ok_button" class="btn btn-default" data-dismiss="modal" disabled>OK</button>
         </div>
       </div>
       
