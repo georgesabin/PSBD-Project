@@ -43,6 +43,7 @@ include_once('header.php');
                             <button id="editare-rezervare" class="btn btn-success" >Editare rezervare</button>
                         </div>
                     </div>
+                    <div id="rezervari"></div>
                 </div>
             </div>
         </div>

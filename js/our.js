@@ -3,6 +3,29 @@ var apiRoutes = {
     autocomplete_date_client: "autocomplete_date_client.php",
     rezervare_camere_popup: "rezervare_camere_popup.php"
 }
+function updateRezervare(button) {
+    var arr = [...button.parentNode.parentNode.querySelectorAll('input')]
+    var retObj = [...arr.map(item => {
+        console.log(item.name)
+        var obj = {}
+        obj[item.name] = item.value;
+        return obj;
+    })]
+    console.log(retObj)
+   
+    $.ajax({
+        url: './ajax_requests/editare_rezervare.php',
+        method: 'POST',
+        dataType: 'json',
+        data: retObj,
+        success: function (data) {
+            if (data.error) {
+                var div = $("#rezervari");
+                div.append(`<h1 style="color: red">${data.error}</h1>`)                
+            }
+        }
+    });
+}
 function verificaClient(cnpID) {
     var cnp = document.getElementById(cnpID).value;
     $.post(`${api}/${apiRoutes.autocomplete_date_client}`, {cnp})
@@ -121,14 +144,46 @@ $(document).ready(function() {
             method: 'POST',
             dataType: 'json',
             data: {
+                actionType: 'rezervari',
                 cnp: $('*[name="editare_cnp"]').val()
             },
             success: function(data) {
+                var div = $("#rezervari");
+                div.innerHTML = "";
                 $.each(data, function (key, value) {
-                    console.log(key, value);
+//                     // value ata_sfarsit
+// :
+// "17-DEC-17"
+// data_start
+// :
+// "15-DEC-17"
+// id
+// :
+// "41"
+// id_camera
+// :
+// "1"
+                    var rezervare = `
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input class="form-control" type="date" name="rezervare_data_sosire" value="${moment(value.data_start, 'DD-MMM-YYYY').format('YYYY-MM-DD')}">
+                            </div>
+                            <div class="col-md-4">                            
+                                <input class="form-control" type="date" name="rezervare_data_plecare" value="${moment(value.data_sfarsit, 'DD-MMM-YYYY').format('YYYY-MM-DD')}">
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="updateRezervare(this)">Trimite</button>
+                            </div>
+                            <input type="hidden" name="id_rezervare" value="${value.id}">
+                            <input type="hidden" name="id_camera" value="${value.id_camera}">
+                        </div>
+                    
+                    `
+                    div.append(rezervare)
                 });
             }
         });
     });
 
+    
 });
