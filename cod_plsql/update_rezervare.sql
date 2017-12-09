@@ -17,6 +17,6 @@ BEGIN
 END update_rezervare;
 /
 
---exec update_rezervare(22, 1, '11-DEC-2017', '14-DEC-2017')
+--exec update_rezervare(22, 1, '25-DEC-2017', '30-DEC-2017')
 --update rezervare_ocupare set data_start = '12-DEC-2017', data_sfarsit = '15-DEC-2017' where id = 22;
---insert into rezervare_ocupare(id_client, id_camera, data_start, data_sfarsit, status_camera) values ( 1, 1, '8-DEC-2017', '10-DEC-2017', 1)
+--insert into rezervare_ocupare(id_client, id_camera, data_start, data_sfarsit, status_camera) values ( 1, 1, '9-DEC-2017', '10-DEC-2017', 1)
