@@ -1,7 +1,7 @@
 SET SERVEROUTPUT ON
 
 --Am creat o secventa pentru a putea face AUTO_INCREMENT
---CREATE OR REPLACE SEQUENCE dept_seq START WITH 1;
+CREATE  SEQUENCE client_seq START WITH 1;
 
 --Am creat un trigger pentru a incrementa id-ul din tabela clienti
 --Tabela dual nu exista. Este ceva fictiv pentru a putea accesa urmatorul id
@@ -9,7 +9,7 @@ CREATE OR REPLACE TRIGGER clienti_on_insert
 BEFORE INSERT ON clienti
 FOR EACH ROW
 BEGIN
-  SELECT dept_seq.nextval
+  SELECT client_seq.nextval
   INTO :new.id
   FROM dual;
 END;

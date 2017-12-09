@@ -1,4 +1,4 @@
-CREATE OR REPLACE SEQUENCE rezervare_ocupare_seq START WITH 1;
+CREATE  SEQUENCE rezervare_ocupare_seq START WITH 1;
 
 CREATE OR REPLACE TRIGGER rezervare_ocupare_on_insert 
 BEFORE INSERT ON rezervare_ocupare

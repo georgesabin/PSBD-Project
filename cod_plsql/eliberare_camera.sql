@@ -15,3 +15,9 @@ END;
 /
 
 --CREATE TABLE rezervare_ocupare (id number NOT NULL, id_client number DEFAULT 0 NOT NULL, id_camera number DEFAULT 0 NOT NULL, data_start date, data_sfarsit date, status_camera smallint DEFAULT 0 NOT NULL)",
+
+
+--insert into rezervare_ocupare values (1, 1, '1-DEC-2017', '2-DEC-2017', 1)
+--insert into rezervare_ocupare(id_client, id_camera, data_start, data_sfarsit, status_camera) values ( 1, 1, '18-DEC-2017', '22-DEC-2017', 1)
+--insert into rezervare_ocupare(id_client, id_camera, data_start, data_sfarsit, status_camera) values ( 1, 1, '12-DEC-2017', '14-DEC-2017', 1)
+--insert into rezervare_ocupare(id_client, id_camera, data_start, data_sfarsit, status_camera) values ( 1, 1, '12-AUG-2017', '14-AUG-2017', 1)
