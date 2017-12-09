@@ -10,8 +10,8 @@ BEGIN
 	INTO v_exists
 	FROM rezervare_ocupare
 	WHERE id_camera=v_id_camera
-	AND data_start<=v_data_sosire
-	AND data_sfarsit>=v_data_plecare;
+	AND not in (data_start<=v_data_plecare
+	AND data_sfarsit>=v_data_sosire);
 	RETURN v_exists;
 END verificare_camera;
 /

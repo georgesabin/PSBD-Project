@@ -46,6 +46,20 @@ function submit_form(form_selector, target) {
 var camere = [];
 
 $(document).ready(function() {
+    
+    // Setez min pe data plecare. Sa inceapa cu o zi dupa cea de sosire
+    $('body').on('change', '*[name="rezervare_data_sosire"]', function() {
+        var dataSosire = $(this).val();
+        var minDatePlecare = moment(dataSosire, "YYYY-MM-DD").add(1, 'd').format("YYYY-MM-DD");
+        $('*[name="rezervare_data_plecare"]').attr('min', minDatePlecare);
+    });
+
+    // Setez max pe data sosire. Sa fie pana la dataPleacare - o zi
+    $('body').on('change', '*[name="rezervare_data_plecare"]', function() {
+        var dataPlecare = $(this).val();
+        var maxDateSosire = moment(dataPlecare, "YYYY-MM-DD").subtract(1, 'd').format("YYYY-MM-DD");
+        $('*[name="rezervare_data_sosire"]').attr('max', maxDateSosire);
+    });
 
     $('body').on('change', '*[name="rezervare_tip_camera"], *[name="rezervare_data_sosire"], *[name="rezervare_data_plecare"]', function() {
         console.log($(this).val());
@@ -95,4 +109,5 @@ $(document).ready(function() {
             $('#myModal').modal('show'); 
         }
     });
+
 });

@@ -18,6 +18,7 @@
     <!-- All Jquery -->
     <!-- ============================================================== -->
     <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="js/moment.js"></script>
     <!-- Bootstrap tether Core JavaScript -->
     <script src="assets/plugins/bootstrap/js/popper.min.js"></script>
     <script src="assets/plugins/bootstrap/js/bootstrap.min.js"></script>
