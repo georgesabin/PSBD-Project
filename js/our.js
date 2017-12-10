@@ -11,13 +11,19 @@ function updateRezervare(button) {
         obj[item.name] = item.value;
         return obj;
     })]
+    retObj = [Object.assign({}, ...retObj)]
     console.log(retObj)
-   
     $.ajax({
         url: './ajax_requests/editare_rezervare.php',
         method: 'POST',
         dataType: 'json',
-        data: retObj,
+        data: {
+            editRezervare: JSON.stringify(retObj),
+        },
+        beforeSend: function () {
+            var div = $("#rezervari");
+            div.find('h1').empty();
+        },
         success: function (data) {
             if (data.error) {
                 var div = $("#rezervari");
@@ -147,6 +153,9 @@ $(document).ready(function() {
                 actionType: 'rezervari',
                 cnp: $('*[name="editare_cnp"]').val()
             },
+            beforeSend: function() {
+                $("#rezervari").empty();
+            },
             success: function(data) {
                 var div = $("#rezervari");
                 div.innerHTML = "";
@@ -185,5 +194,12 @@ $(document).ready(function() {
         });
     });
 
+    // Scoatere rezervari
+    $('body').on('click', '#eliberare_camere', function() {
+        $.ajax({
+            url: './ajax_requests/scoatere_rezervari.php',
+            method: 'GET'
+        });
+    });
     
 });

@@ -1036,7 +1036,7 @@ File: scss
     .topbar .top-navbar .dropdown-toggle::after {
       display: none; }
     .topbar .top-navbar .navbar-header {
-      line-height: 55px;
+      /* line-height: 55px; */
       padding-left: 10px; }
       .topbar .top-navbar .navbar-header .navbar-brand {
         margin-right: 0px;

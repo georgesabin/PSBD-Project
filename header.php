@@ -124,6 +124,9 @@
                         <!-- <li> <a class="waves-effect waves-dark" href="pages-blank.html" aria-expanded="false"><i class="mdi mdi-book-open-variant"></i><span class="hide-menu">Blank</span></a></li> -->
                         <!-- <li> <a class="waves-effect waves-dark" href="pages-error-404.html" aria-expanded="false"><i class="mdi mdi-help-circle"></i><span class="hide-menu">404</span></a></li> -->
                     </ul>
+                    <div class="text-center m-t-30">
+                        <button id="eliberare_camere" class="btn waves-effect waves-light btn-info hidden-md-down">Eliberare camere</button>
+                    </div>
                 </nav>
                 <!-- End Sidebar navigation -->
             </div>
