@@ -65,6 +65,7 @@
                             <div class="col-md-12">
                                 <input type="number" placeholder="Introdu CNP" class="form-control form-control-line" name="rezervare_cnp" id="rezervare_cnp">
                                 <label class="text-danger" style="font-style: italic; font-size: 12px;"></label>
+                                <label id="verificare_client_error" class="text-danger" style="font-style: italic; font-size: 12px;"></label>
                             </div>
                         </div>
 

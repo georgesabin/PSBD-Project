@@ -28,7 +28,36 @@ function updateRezervare(button) {
             if (data.error) {
                 var div = $("#rezervari");
                 div.append(`<h1 style="color: red">${data.error}</h1>`)                
+            } else {
+                alert('Rezervare actualizata!');                
             }
+        }
+    });
+}
+function ocupareCamera(button) {
+    var arr = [...button.parentNode.parentNode.querySelectorAll('input')]
+    var retObj = [...arr.map(item => {
+        console.log(item.name)
+        var obj = {}
+        obj[item.name] = item.value;
+        return obj;
+    })]
+    retObj = [Object.assign({}, ...retObj)]
+    console.log(retObj)
+    $.ajax({
+        url: './ajax_requests/ocupare_rezervare.php',
+        method: 'POST',
+        dataType: 'json',
+        data: {
+            ocupareRezervare: JSON.stringify(retObj),
+        },
+        beforeSend: function () {
+            var div = $("#rezervari");
+            div.find('h1').empty();
+        },
+        success: function () {
+            alert('Camera a fost ocupata cu succes!');
+            $('#ocupare-rezervare').trigger('click');
         }
     });
 }
@@ -41,8 +70,13 @@ function verificaClient(cnpID) {
                 $('input[name="rezervare_nume"]')[0].value = data.nume;
                 $('input[name="rezervare_telefon"]')[0].value = data.nr_telefon;
             }
-            $('#verificaCnpButton').hide();
-            $('.input-hidden').show();
+            if (cnp != '') {
+                $('#verificare_client_error').html('');
+                $('#verificaCnpButton').hide();
+                $('.input-hidden').show();
+            } else {
+                $('#verificare_client_error').html('<i class="mdi mdi-alert-circle"></i> Completeaza CNP!');
+            }
         })
 }
 
@@ -52,8 +86,10 @@ function submit_form(form_selector, target) {
         target: target,
         beforeSubmit: function() {
             $('#' + target).html('');
+            $('#eroareCameraOcupata').html('');
         },
         success: function(data) {
+            $('body').find('.text-danger').html('');
             if (data != '') {
                 result = $.parseJSON(data);
                 if ($.type(result.errors) == 'string') {
@@ -61,14 +97,17 @@ function submit_form(form_selector, target) {
                     $('#eroareCameraOcupata').html('<i class="mdi mdi-alert-circle"></i> ' + result.errors);
                 } else if (!$.isEmptyObject(result.errors)) {
                     $.each(result.errors, function(key, value) {
-                        if (value != '') {
+                        console.log(key, value);
+                        if (value != undefined) {
                             $('*[name="' + key + '"]').siblings('label').html('<i class="mdi mdi-alert-circle"></i>' + value);
-                            console.log(key, value);
                         } else {
+                            console.log('here');
                             $('*[name="' + key + '"]').siblings('label').html('');
                         }
                     });
                 }
+            } else {
+                alert('Rezervare efectuata!');
             }
         }
     });
@@ -160,18 +199,6 @@ $(document).ready(function() {
                 var div = $("#rezervari");
                 div.innerHTML = "";
                 $.each(data, function (key, value) {
-//                     // value ata_sfarsit
-// :
-// "17-DEC-17"
-// data_start
-// :
-// "15-DEC-17"
-// id
-// :
-// "41"
-// id_camera
-// :
-// "1"
                     var rezervare = `
                         <div class="row">
                             <div class="col-md-4">
@@ -193,6 +220,45 @@ $(document).ready(function() {
             }
         });
     });
+
+    $('body').on('click', '#ocupare-rezervare', function() {
+        $.ajax({
+            url: './ajax_requests/ocupare_rezervare.php',
+            method: 'POST',
+            dataType: 'json',
+            data: {
+                actionType: 'ocupare',
+                cnp: $('*[name="editare_cnp"]').val()
+            },
+            beforeSend: function() {
+                $("#rezervari").empty();
+            },
+            success: function(data) {
+                var div = $("#rezervari");
+                div.innerHTML = "";
+                $.each(data, function (key, value) {
+                    var rezervare = `
+                        <div class="row">
+                            <div class="col-md-4">
+                                <input class="form-control" type="date" name="rezervare_data_sosire" value="${moment(value.data_start, 'DD-MMM-YYYY').format('YYYY-MM-DD')}" disabled>
+                            </div>
+                            <div class="col-md-4">                            
+                                <input class="form-control" type="date" name="rezervare_data_plecare" value="${moment(value.data_sfarsit, 'DD-MMM-YYYY').format('YYYY-MM-DD')}" disabled>
+                            </div>
+                            <div class="col-md-4">
+                                <button class="btn btn-success" onclick="ocupareCamera(this)">Ocupa</button>
+                            </div>
+                            <input type="hidden" name="id_rezervare" value="${value.id}">
+                            <input type="hidden" name="id_camera" value="${value.id_camera}">
+                        </div>
+                    
+                    `
+                    div.append(rezervare)
+                });
+            }
+        });
+    });
+
 
     // Scoatere rezervari
     $('body').on('click', '#eliberare_camere', function() {
